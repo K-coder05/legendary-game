@@ -18,8 +18,7 @@ def main_screen():
                 if event.key == pygame.K_SPACE:
                     return True
             if event.type == pygame.QUIT:
-                run = False
-                pygame.quit()
+                return False
             
         pygame.display.update()
 
