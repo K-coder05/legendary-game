@@ -89,7 +89,7 @@ cell_number = 20
 
 screen = pygame.display.set_mode((cell_number *  cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
-number = pygame.image.load('Graphics/number.png').convert_alpha()
+number = pygame.image.load('Assets/lebron.png').convert_alpha()
 
 
 fruit = FRUIT()
