@@ -4,7 +4,9 @@ import main
 def lose_screen():
     main.WIN.fill((0, 0, 0))
     main.draw_text("You lost, better luck next time", main.FONT, (255, 255, 255), 150, 250)
-    main.run = False
+    pygame.display.update()
+
+    return False
 
 def main_screen():
     run = True
@@ -25,4 +27,4 @@ def main_screen():
 def win_screen():
     main.WIN.fill((0, 0, 0))
     main.draw_text("Congratuations!", main.FONT, (255, 255, 255), 200, 250)
-    main.run = False
+    return False

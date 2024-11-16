@@ -12,7 +12,7 @@ pygame.display.set_caption("First Legendary Game")
 # Define variables
 FPS = 60
 VEL = 5
-VEL_CHASE = 3
+VEL_CHASE = 1
 MAIN_WIDTH, MAIN_HEIGHT = 55, 40
 FONT = pygame.font.SysFont("Arial", 32)
 
@@ -93,8 +93,8 @@ def main():
         chase_mechanic(position, position_chase)
         draw_window(position, position_chase)
 
-        if (abs(position.x - position_chase.x) <= MAIN_WIDTH) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT):
-            run = False
+        if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 1.5) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT / 1.5):
+            run = screen_change.lose_screen()
             print("You lose!")
         
 
