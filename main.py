@@ -1,5 +1,6 @@
 import pygame
 import os
+import screen_change
 
 # Initialize the game
 WIDTH, HEIGHT = 900, 500
@@ -17,10 +18,12 @@ LEBRON = pygame.transform.scale(LEBRON_IMAGE, (MAIN_WIDTH, MAIN_HEIGHT))
 BRONNY_IMAGE = pygame.image.load(os.path.join('Assets', 'bronny.png'))
 BRONNY = pygame.transform.scale(BRONNY_IMAGE, (MAIN_WIDTH, MAIN_HEIGHT))
 
+# Functions
 def draw_window(position, position_chase):
     WIN.fill((255, 255, 255))
     WIN.blit(LEBRON, (position.x, position.y))
     WIN.blit(BRONNY, (position_chase.x, position_chase.y))
+    
     pygame.display.update()
 
 def chase_mechanic(position, position_chase):
@@ -43,7 +46,8 @@ def main():
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 
-    run = True
+    run = screen_change.main_screen()
+
     clock = pygame.time.Clock()
 
     while run:
