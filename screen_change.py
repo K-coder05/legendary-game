@@ -22,7 +22,6 @@ def main_screen():
             
         pygame.display.update()
 
-
 def win_screen():
     main.WIN.fill((0, 0, 0))
     main.draw_text("Congratuations!", main.FONT, (255, 255, 255), 200, 250)

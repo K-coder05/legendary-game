@@ -2,6 +2,8 @@ import pygame
 import os
 import screen_change
 
+pygame.init()
+
 # Initialize the game
 WIDTH, HEIGHT = 900, 500
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -12,13 +14,17 @@ FPS = 60
 VEL = 5
 VEL_CHASE = 3
 MAIN_WIDTH, MAIN_HEIGHT = 55, 40
+FONT = pygame.font.SysFont("Arial", 32)
 
 LEBRON_IMAGE = pygame.image.load(os.path.join('Assets', 'lebron.png'))
 LEBRON = pygame.transform.scale(LEBRON_IMAGE, (MAIN_WIDTH, MAIN_HEIGHT))
 BRONNY_IMAGE = pygame.image.load(os.path.join('Assets', 'bronny.png'))
 BRONNY = pygame.transform.scale(BRONNY_IMAGE, (MAIN_WIDTH, MAIN_HEIGHT))
 
-# Functions
+def draw_text(text, font, text_color, x, y):
+    img = font.render(text, True, text_color)
+    WIN.blit(img, (x, y))
+
 def draw_window(position, position_chase):
     WIN.fill((255, 255, 255))
     WIN.blit(LEBRON, (position.x, position.y))
