@@ -16,12 +16,11 @@ FPS = 60
 VEL = 5
 VEL_CHASE = 1
 MAIN_WIDTH, MAIN_HEIGHT = 80, 60
-FONT = pygame.font.SysFont("Arial", 32)
+FONT = pygame.font.Font("Assets/Turok.ttf", 32)
 NUM_OF_GAS_CANS = 4
-
-
+BORDER_THICKNESS = 50
+BORDER_MAX_HEIGHT = 150
 CLOCK = pygame.time.Clock()
-
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
@@ -29,8 +28,8 @@ list_of_operations = ["addition", "subtraction"]
 current_operation = list_of_operations[0]
 score = 0
 target_score = 0
-position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
-position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
+position_chase = pygame.Rect(800, 200, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
 direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
@@ -42,7 +41,7 @@ def reset():
     current_operation = "addition"
     VEL_CHASE = 1
     VEL = 5
-    position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+    position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
@@ -54,7 +53,7 @@ def draw_text(text, font, text_color, x_offset, y_offset):
     WIN.blit(img, img_rect)
 
 def draw_score(score, font, text_color, x, y):
-    score = font.render(str(score), True, text_color)
+    score = font.render(str(score), False, text_color)
     WIN.blit(score, (x, y))
 
 def draw_target_score(target_score, font, text_color, x, y):
@@ -157,7 +156,7 @@ def main():
                     reset()
         elif direction == 2:   
             position.y -= VEL
-            if position.y - VEL < 0:
+            if position.y - VEL < BORDER_MAX_HEIGHT:
                 run = screen_change.lose_screen()
                 if run: 
                     reset()
@@ -178,9 +177,9 @@ def main():
         elif keys_pressed[pygame.K_DOWN]:
             direction = 3
         if keys_pressed[pygame.K_s]:
-            current_operation = "-"
+            current_operation = "subtraction"
         elif keys_pressed[pygame.K_a]:
-            current_operation = "+"
+            current_operation = "addition"
 
 
         chase_direction = chase_mechanic(position, position_chase)
@@ -220,7 +219,9 @@ def main():
             VEL_CHASE += 0.25
             VEL += 0.5
         elif score > target_score:
-            reset()
+            run = screen_change.lose_screen()
+            if run:
+                reset()
 
         pygame.display.update()
 
