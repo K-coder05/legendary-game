@@ -11,9 +11,13 @@ quit_img = pygame.image.load("Assets/MenuButtons/QuitButton.png").convert_alpha(
 def controls_screen():
     # Load control images
     key_left_img = pygame.image.load("Assets/MenuButtons/KeyboardLeft.png").convert_alpha()
+    key_left_pushed_img = pygame.image.load("Assets/MenuButtons/KeyboardLeftPushed.png").convert_alpha()
     key_right_img = pygame.image.load("Assets/MenuButtons/KeyboardRight.png").convert_alpha()
+    key_right_pushed_img = pygame.image.load("Assets/MenuButtons/KeyboardRightPushed.png").convert_alpha()
     key_up_img = pygame.image.load("Assets/MenuButtons/KeyboardUp.png").convert_alpha()
+    key_up_pushed_img = pygame.image.load("Assets/MenuButtons/KeyboardUpPushed.png").convert_alpha()
     key_down_img = pygame.image.load("Assets/MenuButtons/KeyboardDown.png").convert_alpha()
+    key_down_pushed_img = pygame.image.load("Assets/MenuButtons/KeyboardDownPushed.png").convert_alpha()
     key_space1_img = pygame.image.load("Assets/MenuButtons/KeyboardSpace1.png").convert_alpha()
     key_space2_img = pygame.image.load("Assets/MenuButtons/KeyboardSpace2.png").convert_alpha()
     key_space3_img = pygame.image.load("Assets/MenuButtons/KeyboardSpace3.png").convert_alpha()
@@ -21,7 +25,10 @@ def controls_screen():
     key_sub_image = pygame.image.load("Assets/MenuButtons/KeyboardS.png").convert_alpha()
 
     # 1100 x 700 (550 x 350) window dimensions
-
+    left_pushed = False
+    right_pushed = False
+    up_pushed = False
+    down_pushed = False
     controls_run = True
     while controls_run:
         main.WIN.fill((0, 0, 0))
@@ -30,10 +37,22 @@ def controls_screen():
         main.draw_text("________", main.FONT, (255, 255, 255), 0, -250)
 
         main.draw_text("Use the arrow keys to move", main.FONT, (255, 255, 255), 0, -200)
-        main.WIN.blit(key_left_img, (main.WIDTH/2 - 100, main.HEIGHT/2 - 150))
-        main.WIN.blit(key_right_img, (main.WIDTH/2 - 50, main.HEIGHT/2 - 150))
-        main.WIN.blit(key_up_img, (main.WIDTH/2 + 18, main.HEIGHT/2 - 150))
-        main.WIN.blit(key_down_img, (main.WIDTH/2 + 68, main.HEIGHT/2 - 150))
+        if (not left_pushed):
+            main.WIN.blit(key_left_img, (main.WIDTH/2 - 100, main.HEIGHT/2 - 150))
+        else:
+            main.WIN.blit(key_left_pushed_img, (main.WIDTH/2 - 100, main.HEIGHT/2 - 150))
+        if (not right_pushed):
+            main.WIN.blit(key_right_img, (main.WIDTH/2 - 50, main.HEIGHT/2 - 150))
+        else:
+            main.WIN.blit(key_right_pushed_img, (main.WIDTH/2 - 50, main.HEIGHT/2 - 150))
+        if (not up_pushed):
+            main.WIN.blit(key_up_img, (main.WIDTH/2 + 18, main.HEIGHT/2 - 150))
+        else:
+            main.WIN.blit(key_up_pushed_img, (main.WIDTH/2 + 18, main.HEIGHT/2 - 150))
+        if (not down_pushed):
+            main.WIN.blit(key_down_img, (main.WIDTH/2 + 68, main.HEIGHT/2 - 150))
+        else:
+            main.WIN.blit(key_down_pushed_img, (main.WIDTH/2 + 68, main.HEIGHT/2 - 150))
 
         main.draw_text("Press 'Space' to pause the game", main.FONT, (255, 255, 255), 0, -50)
         main.WIN.blit(key_space1_img, (main.WIDTH/2 - 48, main.HEIGHT/2))
@@ -48,9 +67,26 @@ def controls_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    left_pushed = True
+                if event.key == pygame.K_RIGHT:
+                    right_pushed = True
+                if event.key == pygame.K_DOWN:
+                    down_pushed = True
+                if event.key == pygame.K_UP:
+                    up_pushed = True
                 if event.key == pygame.K_SPACE:
                     controls_run = True
                     return True
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    left_pushed = False
+                if event.key == pygame.K_RIGHT:
+                    right_pushed = False
+                if event.key == pygame.K_DOWN:
+                    down_pushed = False
+                if event.key == pygame.K_UP:
+                    up_pushed = False
             if event.type == pygame.QUIT:
                 controls_run = False
                 return False
