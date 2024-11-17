@@ -1,0 +1,33 @@
+# Byte-compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# C extensions
+*.so
+
+# Virtual environment
+venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python egg metadata
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Cache files and folders
+__pycache__/
+.cache/
+*.cache
+
+# Logs
+*.log
+
+# IDE-specific settings
+.vscode/
+.idea/
+*.swp
