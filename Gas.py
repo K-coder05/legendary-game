@@ -27,6 +27,6 @@ class Gas:
     def generate_random_gas(self, random_gas_num):
         gas_image_filename = f"Gascan{random_gas_num}.png"
         self.gas_img = pygame.transform.scale(
-            pygame.image.load(os.path.join('Assets', gas_image_filename)),
+            pygame.image.load(os.path.join('Assets/Numbers', gas_image_filename)),
             (self.MAIN_WIDTH, self.MAIN_HEIGHT)
         )
