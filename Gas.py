@@ -21,7 +21,7 @@ class Gas:
 
     def respawn(self):
         # Generate new random position
-        self.x = random.randint(0, self.WIDTH - self.MAIN_WIDTH)
+        self.x = random.randint(0, self.WIDTH)
         self.y = random.randint(200, self.HEIGHT - self.MAIN_HEIGHT)
         self.gas_rect = pygame.Rect(self.x, self.y, self.MAIN_WIDTH, self.MAIN_HEIGHT)
         

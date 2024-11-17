@@ -2,7 +2,9 @@ import pygame
 import os
 import screen_change
 import random
+
 from gas import Gas 
+from chaser import Chaser
 
 pygame.init()
 
@@ -18,14 +20,14 @@ VEL_CHASE = 1
 MAIN_WIDTH, MAIN_HEIGHT = 80, 60
 FONT = pygame.font.Font("Assets/Turok.ttf", 32)
 NUM_OF_GAS_CANS = 4
-BORDER_THICKNESS = 50
+BORDER_THICKNESS = 75
 BORDER_MAX_HEIGHT = 150
 CLOCK = pygame.time.Clock()
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
 # temp 
-NUM_OF_CHASERS = 4
+NUM_OF_CHASERS = 2
 
 # Define global variables
 list_of_operations = ["addition", "subtraction"]
@@ -37,10 +39,11 @@ position_chase = pygame.Rect(800, 200, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
 direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
+chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
 
 # Resets the game
 def reset():
-    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation
+    global chasers, score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation
     score = 0
     target_score = 0
     current_operation = "addition"
@@ -49,6 +52,7 @@ def reset():
     position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
+    chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
     start_time = pygame.time.get_ticks()
 
@@ -99,7 +103,6 @@ def draw_window(position, direction, elapsed_time):
     WIN.blit(mainSprite, (position.x, position.y))
     WIN.blit(timer_surface, (800, 100))
 
-    
     for gas_spawn in gas_spawns:
         if position.colliderect(gas_spawn.gas_rect):
             if current_operation == "subtraction":
@@ -107,12 +110,17 @@ def draw_window(position, direction, elapsed_time):
             elif current_operation == "addition":
                 score += gas_spawn.random_gas_num
             gas_spawn.respawn()
-
-    for gas_spawn in gas_spawns:
         gas_spawn.draw_gas(WIN)
+
+    for chaser in chasers:
+        chaser.draw(WIN, position)
         
     draw_score("Score: " + str(score), FONT, WHITE, 100, 100)
     draw_target_score("Target Score: " + str(target_score), FONT, WHITE, 350, 100)
+    if current_operation == "addition":
+        draw_operation_symbol(current_operation, 250, 100)
+    elif current_operation == "subtraction":
+        draw_operation_symbol(current_operation, 250, 100)
 
 def main():
     
@@ -151,7 +159,7 @@ def main():
                     reset()
         elif direction == 3:
             position.y += VEL
-            if position.y + VEL > HEIGHT:
+            if position.y + VEL > HEIGHT - BORDER_THICKNESS:
                 run = screen_change.lose_screen()
                 if run: 
                     reset()
@@ -176,11 +184,6 @@ def main():
             if run:
                 reset()
 
-        if current_operation == "addition":
-            draw_operation_symbol(current_operation, 250, 100)
-        elif current_operation == "subtraction":
-            draw_operation_symbol(current_operation, 250, 100)
-
         if (target_score == score):
             target_score += random.randint(10, 20)
             VEL_CHASE += 0.25
@@ -189,8 +192,14 @@ def main():
             run = screen_change.lose_screen()
             if run:
                 reset()
-        
+
         draw_window(position, direction, 60 - elapsed_time)
+
+        for chaser in chasers:
+            if (position.colliderect(chaser.get_rect())):
+                run = screen_change.lose_screen()
+                if run:
+                    reset()
 
         pygame.display.update()
 
