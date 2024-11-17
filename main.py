@@ -3,7 +3,7 @@ import os
 import screen_change
 import random
 
-from Gas import Gas 
+from gas import Gas 
 from chaser import Chaser
 
 pygame.init()
@@ -207,7 +207,7 @@ def main():
         draw_window(position, direction, 60 - elapsed_time)
 
         for chaser in chasers:
-            if (position.colliderect(chaser.get_rect())):
+            if (chaser.get_rect().collidepoint(position.x + 25, position.y + 25)):
                 run = screen_change.lose_screen(game_score)
                 if run:
                     reset()
