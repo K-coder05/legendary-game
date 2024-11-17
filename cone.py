@@ -24,4 +24,4 @@ class Cone:
 
     def generate_image(self):
         self.img = pygame.transform.scale(
-            pygame.image.load(os.path.join('Assets', 'lebron.png')), (self.MAIN_WIDTH, self.MAIN_HEIGHT))
+            pygame.image.load(os.path.join('Assets', 'cone.png')), (self.MAIN_WIDTH, self.MAIN_HEIGHT))
