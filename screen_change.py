@@ -5,7 +5,6 @@ import main
 
 # Load music
 mixer.init()
-mixer.music.load("Assets/Sounds/Music/ChillMusic.mp3")
 
 # Load button images
 play_img = pygame.image.load("Assets/MenuButtons/PlayButton.png").convert_alpha()
@@ -92,6 +91,9 @@ def controls_screen():
                     s_pushed = True
                 if event.key == pygame.K_SPACE:
                     controls_run = True
+                    mixer.music.stop()
+                    mixer.music.load("Assets/Sounds/Music/ChillMusic.mp3")
+                    mixer.music.play()
                     return True
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
@@ -154,12 +156,13 @@ def main_screen():
     background_image = pygame.image.load("Assets/MenuButtons/MenuBackground.jpg")
     background_image = pygame.transform.scale(background_image, (main.WIDTH, main.HEIGHT))
 
-    mixer.music.play()
+    mixer.music.load("Assets/Sounds/Music/RelaxedSpaceMusic.mp3")
+    mixer.music.play(loops=100)
     
     main_run = True
     while main_run:
         main.WIN.blit(background_image, (0,0))
-        main.draw_text("Welcome to Legendary Game", main.FONT, (0, 0, 0), 0, -100)
+        main.draw_text("Welcome to Velocity Math", main.FONT, (0, 0, 0), 0, -100)
         
         if play_button.draw(main.WIN):
             main_run = False

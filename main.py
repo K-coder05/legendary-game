@@ -12,7 +12,7 @@ pygame.init()
 # Initialize the game
 WIDTH, HEIGHT = 1100, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("First Legendary Game")
+pygame.display.set_caption("Velocity Math")
 
 # Define constant variables
 FPS = 60
