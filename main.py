@@ -217,7 +217,7 @@ def main():
 
         pygame.display.update()
 
-        if (abs(position.x - position_chase.x) < 50) and ( abs(position.y == position_chase.y):
+        if (position.colliderect(position_chase)):
             run = screen_change.lose_screen()
             if run:
                 reset()
