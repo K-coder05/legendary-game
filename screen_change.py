@@ -2,7 +2,6 @@ import pygame
 import main
 
 def lose_screen():
-<<<<<<< HEAD
     lose_run = True
     while lose_run:
         main.WIN.fill((0, 0, 0))
@@ -20,26 +19,13 @@ def lose_screen():
             
         pygame.display.update()
 
-=======
-    main.WIN.fill((0, 0, 0))
-    pygame.time.delay(1000)
-    main.draw_text("You lost, better luck next time", main.FONT, (255, 255, 255), 350, 300)
-    pygame.display.update()
-
-    return False
->>>>>>> a5e5b45ca3be1718da2c1aeb268ee96b8c520728
 
 def main_screen():
     main_run = True
     while main_run:
         main.WIN.fill((0, 0, 0))
-<<<<<<< HEAD
-        main.draw_text("Welcome to Legendary Game", main.FONT, (255, 255, 255), 220, 210)
-        main.draw_text("Press 'Space' to start", main.FONT, (255, 255, 255), 270, 260)
-=======
         main.draw_text("Welcome to Legendary Game", main.FONT, (255, 255, 255), 300, 250)
         main.draw_text("Press 'Space' to start", main.FONT, (255, 255, 255), 350, 300)
->>>>>>> a5e5b45ca3be1718da2c1aeb268ee96b8c520728
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -47,10 +33,6 @@ def main_screen():
                     main_run = False
                     return True
             if event.type == pygame.QUIT:
-<<<<<<< HEAD
-                main_run = False
-=======
->>>>>>> a5e5b45ca3be1718da2c1aeb268ee96b8c520728
                 return False
             
         pygame.display.update()
@@ -81,7 +63,6 @@ def pause_screen():
 
 
 def win_screen():
-<<<<<<< HEAD
     win_run = True
     while win_run:
         main.WIN.fill((0, 0, 0))
@@ -99,9 +80,3 @@ def win_screen():
             
         pygame.display.update()
         
-=======
-    main.WIN.fill((0, 0, 0))
-    main.draw_text("Congrats, You Won!", main.FONT, (255, 255, 255), 300, 250)
-    main.draw_text("Next Level Starting Soon...", main.FONT, (255, 255, 255), 350, 300)
-    return True
->>>>>>> a5e5b45ca3be1718da2c1aeb268ee96b8c520728
