@@ -33,7 +33,7 @@ NUM_OF_CHASERS = 2
 list_of_operations = ["addition", "subtraction"]
 current_operation = list_of_operations[0]
 score = 0
-target_score = 0
+target_score = random.randint(10, 20)
 game_score = 0
 position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
@@ -46,7 +46,7 @@ def reset():
     global chasers, score, target_score, position
     global gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation, game_score
     score = 0
-    target_score = 0
+    target_score = random.randint(10, 20)
     game_score = 0
     current_operation = "addition"
     VEL_CHASE = 1
@@ -56,7 +56,6 @@ def reset():
     chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
     start_time = pygame.time.get_ticks()
-    print("Level 2")
 
 def draw_text(text, font, text_color, x_offset, y_offset):
     img = font.render(text, True, text_color)
@@ -84,7 +83,7 @@ def draw_operation_symbol(current_operation, x, y):
 def draw_window(position, direction, elapsed_time):
     
     # Global variables
-    global score, target_score, gas_spawns, current_operation
+    global score, target_score, gas_spawns, current_operation, game_score
     
     # Load image
     if direction == 0:
@@ -197,7 +196,7 @@ def main():
         if (target_score == score):
             target_score += random.randint(10, 20)
             VEL_CHASE += 0.25
-            VEL += 1
+            VEL += 0.5
             game_score += 10
         elif score > target_score:
             run = screen_change.lose_screen(game_score)
