@@ -2,7 +2,7 @@ import button
 import pygame
 import main
 
-
+# Load button images
 play_img = pygame.image.load("Assets/MenuButtons/PlayButton.png").convert_alpha()
 pause_img = pygame.image.load("Assets/MenuButtons/PauseButton.png").convert_alpha()
 quit_img = pygame.image.load("Assets/MenuButtons/QuitButton.png").convert_alpha()
@@ -26,22 +26,25 @@ def controls_screen():
     while controls_run:
         main.WIN.fill((0, 0, 0))
 
-        main.draw_text("CONTROLS", main.FONT, (255, 255, 255), 0, -200)
+        main.draw_text("CONTROLS", main.FONT, (255, 255, 255), 0, -250)
+        main.draw_text("________", main.FONT, (255, 255, 255), 0, -250)
 
-        main.draw_text("Use the arrow keys to move", main.FONT, (255, 255, 255), 0, -100)
-        main.WIN.blit(key_left_img, (main.WIDTH/2 - 100, main.HEIGHT/2 - 50))
-        main.WIN.blit(key_right_img, (main.WIDTH/2 - 50, main.HEIGHT/2 - 50))
-        main.WIN.blit(key_up_img, (main.WIDTH/2 + 18, main.HEIGHT/2 - 50))
-        main.WIN.blit(key_down_img, (main.WIDTH/2 + 68, main.HEIGHT/2 - 50))
+        main.draw_text("Use the arrow keys to move", main.FONT, (255, 255, 255), 0, -200)
+        main.WIN.blit(key_left_img, (main.WIDTH/2 - 100, main.HEIGHT/2 - 150))
+        main.WIN.blit(key_right_img, (main.WIDTH/2 - 50, main.HEIGHT/2 - 150))
+        main.WIN.blit(key_up_img, (main.WIDTH/2 + 18, main.HEIGHT/2 - 150))
+        main.WIN.blit(key_down_img, (main.WIDTH/2 + 68, main.HEIGHT/2 - 150))
 
-        main.draw_text("Press 'Space' to pause the game", main.FONT, (255, 255, 255), 0, 50)
-        main.WIN.blit(key_space1_img, (main.WIDTH/2 - 48, main.HEIGHT/2 + 100))
-        main.WIN.blit(key_space2_img, (main.WIDTH/2 - 15, main.HEIGHT/2 + 100))
-        main.WIN.blit(key_space3_img, (main.WIDTH/2 + 16, main.HEIGHT/2 + 100))
+        main.draw_text("Press 'Space' to pause the game", main.FONT, (255, 255, 255), 0, -50)
+        main.WIN.blit(key_space1_img, (main.WIDTH/2 - 48, main.HEIGHT/2))
+        main.WIN.blit(key_space2_img, (main.WIDTH/2 - 16, main.HEIGHT/2))
+        main.WIN.blit(key_space3_img, (main.WIDTH/2 + 15, main.HEIGHT/2))
 
-        main.draw_text("Press 'A' to go into add mode", main.FONT, (255, 255, 255), 0, 150)
-        
+        main.draw_text("Press 'A' to go into add mode", main.FONT, (255, 255, 255), -15, 100)
+        main.WIN.blit(key_add_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 80))
 
+        main.draw_text("Press 'S' to go into subtract mode", main.FONT, (255, 255, 255), 30, 200)
+        main.WIN.blit(key_sub_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 180))
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -56,7 +59,7 @@ def controls_screen():
         pygame.display.update()
 
 
-def lose_screen():
+def lose_screen(game_score):
     play_button = button.Button(main.WIDTH/2 - 80, main.HEIGHT/2 + 50, play_img, 1.5)
     quit_button = button.Button(main.WIDTH/2 - 75, main.HEIGHT/2 + 150, quit_img, 1.5)
     
