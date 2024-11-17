@@ -1,12 +1,17 @@
 import button
 import pygame
+from pygame import mixer
 import main
+
+# Load music
+mixer.init()
+mixer.music.load("Assets/Sounds/Music/ChillMusic.mp3")
 
 # Load button images
 play_img = pygame.image.load("Assets/MenuButtons/PlayButton.png").convert_alpha()
 pause_img = pygame.image.load("Assets/MenuButtons/PauseButton.png").convert_alpha()
 quit_img = pygame.image.load("Assets/MenuButtons/QuitButton.png").convert_alpha()
-    
+
 
 def controls_screen():
     # Load control images
@@ -110,8 +115,13 @@ def controls_screen():
 
 
 def lose_screen(game_score):
+
     play_button = button.Button(main.WIDTH/2 - 80, main.HEIGHT/2 + 50, play_img, 1.5)
     quit_button = button.Button(main.WIDTH/2 - 75, main.HEIGHT/2 + 150, quit_img, 1.5)
+
+    mixer.music.stop()
+    mixer.music.load("Assets/Sounds/Explosion.wav")
+    mixer.music.play()
     
     lose_run = True
     while lose_run:
@@ -122,6 +132,8 @@ def lose_screen(game_score):
         
         if play_button.draw(main.WIN):
             lose_run = False
+            mixer.music.load("Assets/Sounds/Music/ChillMusic.mp3")
+            mixer.music.play()
             return True
         if quit_button.draw(main.WIN):
             lose_run = False
@@ -141,6 +153,8 @@ def main_screen():
     
     background_image = pygame.image.load("Assets/MenuButtons/MenuBackground.jpg")
     background_image = pygame.transform.scale(background_image, (main.WIDTH, main.HEIGHT))
+
+    mixer.music.play()
     
     main_run = True
     while main_run:
