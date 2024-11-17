@@ -205,8 +205,8 @@ def main():
 
         if (target_score == score):
             target_score += random.randint(10, 20)
-            VEL_CHASE += 0.25
-            VEL += 0.5
+            VEL_CHASE += 0.125
+            VEL += 0.25
             game_score += 10
             level += 1
             chasers.append(Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE))
