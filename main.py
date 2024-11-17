@@ -210,7 +210,7 @@ def main():
             level += 1
             chasers.append(Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE))
             cones.append(Cone(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT))
-        elif score > target_score:
+        elif score > target_score or score < 0:
             run = screen_change.lose_screen(game_score)
             if run:
                 reset()
