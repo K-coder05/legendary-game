@@ -33,6 +33,7 @@ def main_screen():
                     main_run = False
                     return True
             if event.type == pygame.QUIT:
+                main_run = False
                 return False
             
         pygame.display.update()
