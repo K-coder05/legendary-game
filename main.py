@@ -24,6 +24,9 @@ CLOCK = pygame.time.Clock()
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
+# temp 
+NUM_OF_CHASERS = 4
+
 # Define global variables
 list_of_operations = ["addition", "subtraction"]
 current_operation = list_of_operations[0]
@@ -35,6 +38,7 @@ gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_
 direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
 
+# Resets the game
 def reset():
     global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation
     score = 0
@@ -67,17 +71,12 @@ def draw_operation_symbol(current_operation, x, y):
     operation_img = pygame.transform.scale(operation_img, (50, 50))
     WIN.blit(operation_img, (x, y))
 
-def draw_window(position, position_chase, direction, chase_direction, elapsed_time):
-    # Load images
-    if chase_direction == 0:
-        chaser_image = pygame.image.load(os.path.join('Assets/ChaserSprite', 'police_east.png'))
-    elif chase_direction == 1:
-        chaser_image = pygame.image.load(os.path.join('Assets/ChaserSprite', 'police_west.png'))
-    elif chase_direction == 2:
-        chaser_image = pygame.image.load(os.path.join('Assets/ChaserSprite', 'police_north.png'))
-    else:
-        chaser_image = pygame.image.load(os.path.join('Assets/ChaserSprite', 'police_south.png'))
-
+def draw_window(position, direction, elapsed_time):
+    
+    # Global variables
+    global score, target_score, gas_spawns, current_operation
+    
+    # Load image
     if direction == 0:
         car_image = pygame.image.load(os.path.join('Assets/CarSprite', 'car_east.png'))
     elif direction == 1:
@@ -88,7 +87,6 @@ def draw_window(position, position_chase, direction, chase_direction, elapsed_ti
         car_image = pygame.image.load(os.path.join('Assets/CarSprite', 'car_south.png'))
 
     mainSprite = pygame.transform.scale(car_image, (MAIN_WIDTH, MAIN_HEIGHT))
-    chaserSprite = pygame.transform.scale(chaser_image, (MAIN_WIDTH, MAIN_HEIGHT))
 
     background_image = pygame.image.load(os.path.join('Assets', 'background.png')).convert()
     background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
@@ -99,32 +97,26 @@ def draw_window(position, position_chase, direction, chase_direction, elapsed_ti
 
     WIN.blit(background_image, (0, 0))
     WIN.blit(mainSprite, (position.x, position.y))
-    WIN.blit(chaserSprite, (position_chase.x, position_chase.y))
     WIN.blit(timer_surface, (800, 100))
-    
-def chase_mechanic(position, position_chase):
-    distance_x = abs(position.x - position_chase.x)
-    distance_y = abs(position.y - position_chase.y)
 
-    if distance_x > distance_y:
-        if (position.x < position_chase.x):
-            position_chase.x -= VEL_CHASE
-            return 1
-        else:
-            position_chase.x += VEL_CHASE
-            return 0
-    else:
-        if (position.y < position_chase.y):
-            position_chase.y -= VEL_CHASE
-            return 3
-        else:
-            position_chase.y += VEL_CHASE
-            return 2
+    
+    for gas_spawn in gas_spawns:
+        if position.colliderect(gas_spawn.gas_rect):
+            if current_operation == "subtraction":
+                score -= gas_spawn.random_gas_num
+            elif current_operation == "addition":
+                score += gas_spawn.random_gas_num
+            gas_spawn.respawn()
+
+    for gas_spawn in gas_spawns:
+        gas_spawn.draw_gas(WIN)
+        
+    draw_score("Score: " + str(score), FONT, WHITE, 100, 100)
+    draw_target_score("Target Score: " + str(target_score), FONT, WHITE, 350, 100)
 
 def main():
     
-
-    # Tell interpreter to find global variables
+    # Find global variables
     global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation  
 
     run = screen_change.main_screen()
@@ -177,36 +169,17 @@ def main():
             current_operation = "subtraction"
         elif keys_pressed[pygame.K_a]:
             current_operation = "addition"
-
-        chase_direction = chase_mechanic(position, position_chase)
-
-        for gas_spawn in gas_spawns:
-            if position.colliderect(gas_spawn.gas_rect):
-                if current_operation == "subtraction":
-                    score -= gas_spawn.random_gas_num
-                elif current_operation == "addition":
-                    score += gas_spawn.random_gas_num
-                gas_spawn.respawn()
-            
         
         elapsed_time = (pygame.time.get_ticks() - start_time) / 1000  # Convert ms to seconds
         if elapsed_time <= 0:
             run = screen_change.lose_screen()
             if run:
                 reset()
-        draw_window(position, position_chase, direction, chase_direction, 60 - elapsed_time)
-        
-        for gas_spawn in gas_spawns:
-            gas_spawn.draw_gas(WIN)
-
 
         if current_operation == "addition":
             draw_operation_symbol(current_operation, 250, 100)
         elif current_operation == "subtraction":
             draw_operation_symbol(current_operation, 250, 100)
-
-        draw_score("Score: " + str(score), FONT, WHITE, 100, 100)
-        draw_target_score("Target Score: " + str(target_score), FONT, WHITE, 350, 100)
 
         if (target_score == score):
             target_score += random.randint(10, 20)
@@ -216,6 +189,8 @@ def main():
             run = screen_change.lose_screen()
             if run:
                 reset()
+        
+        draw_window(position, direction, 60 - elapsed_time)
 
         pygame.display.update()
 
