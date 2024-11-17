@@ -2,7 +2,7 @@ import pygame
 import os
 import screen_change
 import random
-from gas import Gas 
+from Gas import Gas 
 
 pygame.init()
 
@@ -120,6 +120,7 @@ def draw_window(position, direction, elapsed_time):
         
     draw_score("Score: " + str(score), FONT, WHITE, 100, 100)
     draw_target_score("Target Score: " + str(target_score), FONT, WHITE, 350, 100)
+    draw_game_scoreboard(str(game_score), FONT, WHITE, 900, 10)
 
 def main():
     
@@ -209,7 +210,7 @@ def main():
         pygame.display.update()
 
         if (position.collidepoint(position_chase.x + 25, position_chase.y + 25)):
-            run = screen_change.lose_screen()
+            run = screen_change.lose_screen(game_score)
             if run:
                 reset()
 
