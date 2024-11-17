@@ -25,7 +25,7 @@ CLOCK = pygame.time.Clock()
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
-list_of_operations = ["+", "-"]
+list_of_operations = ["addition", "subtraction"]
 current_operation = list_of_operations[0]
 score = 0
 target_score = 0
@@ -39,7 +39,7 @@ def reset():
     global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation
     score = 0
     target_score = 0
-    current_operation = "+"
+    current_operation = "addition"
     VEL_CHASE = 1
     VEL = 5
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
@@ -60,6 +60,12 @@ def draw_score(score, font, text_color, x, y):
 def draw_target_score(target_score, font, text_color, x, y):
     target_score_prompt = font.render(str(target_score), True, text_color)
     WIN.blit(target_score_prompt, (x, y))
+
+def draw_operation_symbol(current_operation, x, y):
+    symbol_image_path = os.path.join('Assets', f"{current_operation} symbol.png")
+    operation_img = pygame.image.load(symbol_image_path).convert_alpha()
+    operation_img = pygame.transform.scale(operation_img, (50, 50))
+    WIN.blit(operation_img, (x, y))
 
 def draw_window(position, position_chase, direction, chase_direction, elapsed_time):
     # Load images
@@ -87,6 +93,8 @@ def draw_window(position, position_chase, direction, chase_direction, elapsed_ti
     background_image = pygame.image.load(os.path.join('Assets', 'background.png')).convert()
     background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 
+    addition_image = pygame.image.load(os.path.join('Assets', 'addition symbol.png')).convert()
+
     elapsed_time = round(elapsed_time, 2)
     timer_text = f"Time: {elapsed_time}s"
     timer_surface = FONT.render(timer_text, True, GRAY)
@@ -96,6 +104,7 @@ def draw_window(position, position_chase, direction, chase_direction, elapsed_ti
     WIN.blit(mainSprite, (position.x, position.y))
     WIN.blit(chaserSprite, (position_chase.x, position_chase.y))
     WIN.blit(timer_surface, (800, 50))
+    WIN.blit(addition_image, (50, 800))
     
 def chase_mechanic(position, position_chase):
     distance_x = abs(position.x - position_chase.x)
@@ -184,9 +193,9 @@ def main():
 
         for gas_spawn in gas_spawns:
             if position.colliderect(gas_spawn.gas_rect):
-                if current_operation == "-":
+                if current_operation == "subtraction":
                     score -= gas_spawn.random_gas_num
-                elif current_operation == "+":
+                elif current_operation == "addition":
                     score += gas_spawn.random_gas_num
                 gas_spawn.respawn()
             
@@ -201,6 +210,7 @@ def main():
         for gas_spawn in gas_spawns:
             gas_spawn.draw_gas(WIN)
 
+        draw_operation_symbol(current_operation, 50, 650)
 
         draw_score(str(score), FONT, GRAY, 25, 25)
         draw_target_score(str(target_score), FONT, GRAY, 100, 25)
