@@ -177,7 +177,7 @@ def main():
                     reset()
         elif direction == 3:
             position.y += VEL
-            if position.y + VEL > HEIGHT:
+            if position.y + VEL > 625:
                 run = screen_change.lose_screen(game_score)
                 if run: 
                     reset()
