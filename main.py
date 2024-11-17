@@ -3,7 +3,7 @@ import os
 import screen_change
 import random
 
-from Gas import Gas 
+from gas import Gas 
 from chaser import Chaser
 from cone import Cone
 
@@ -26,9 +26,6 @@ BORDER_MAX_HEIGHT = 150
 CLOCK = pygame.time.Clock()
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
-
-# temp 
-NUM_OF_CHASERS = 2
 
 # Define global variables
 list_of_operations = ["addition", "subtraction"]
@@ -56,7 +53,7 @@ def reset():
     VEL = 5
     position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
-    chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
+    chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(level)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
     start_time = pygame.time.get_ticks()
     cones = [Cone(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(level)]
@@ -135,6 +132,8 @@ def draw_window(position, direction, elapsed_time):
         draw_operation_symbol(current_operation, 250, 100)
     elif current_operation == "subtraction":
         draw_operation_symbol(current_operation, 250, 100)
+
+    draw_game_scoreboard("Level: " + str(level), FONT, WHITE, 500, 10)
     draw_game_scoreboard("Points: " + str(game_score), FONT, WHITE, 900, 10)
 
 def main():
