@@ -133,7 +133,7 @@ def lose_screen(game_score):
         if play_button.draw(main.WIN):
             lose_run = False
             mixer.music.load("Assets/Sounds/Music/ChillMusic.mp3")
-            mixer.music.play()
+            mixer.music.play(loops=8)
             return True
         if quit_button.draw(main.WIN):
             lose_run = False
