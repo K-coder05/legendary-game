@@ -65,7 +65,7 @@ def lose_screen(game_score):
     
     lose_run = True
     while lose_run:
-        main.WIN.fill((192,192,192))
+        main.WIN.fill((255, 255, 255))
 
         losing_message = "You lost! Score: " + str(game_score)
         main.draw_text(losing_message, main.FONT, (0, 0, 0), 0, -100)
