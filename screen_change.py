@@ -22,13 +22,13 @@ def controls_screen():
     key_space2_img = pygame.image.load("Assets/MenuButtons/KeyboardSpace2.png").convert_alpha()
     key_space3_img = pygame.image.load("Assets/MenuButtons/KeyboardSpace3.png").convert_alpha()
     key_add_image = pygame.image.load("Assets/MenuButtons/KeyboardA.png").convert_alpha()
+    key_add_pushed_image = pygame.image.load("Assets/MenuButtons/KeyboardAPushed.png").convert_alpha()
     key_sub_image = pygame.image.load("Assets/MenuButtons/KeyboardS.png").convert_alpha()
+    key_sub_pushed_image = pygame.image.load("Assets/MenuButtons/KeyboardSPushed.png").convert_alpha()
 
     # 1100 x 700 (550 x 350) window dimensions
-    left_pushed = False
-    right_pushed = False
-    up_pushed = False
-    down_pushed = False
+    left_pushed = right_pushed = up_pushed = down_pushed = a_pushed = s_pushed = False
+
     controls_run = True
     while controls_run:
         main.WIN.fill((0, 0, 0))
@@ -60,10 +60,16 @@ def controls_screen():
         main.WIN.blit(key_space3_img, (main.WIDTH/2 + 15, main.HEIGHT/2))
 
         main.draw_text("Press 'A' to go into add mode", main.FONT, (255, 255, 255), -15, 100)
-        main.WIN.blit(key_add_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 80))
+        if (not a_pushed):
+            main.WIN.blit(key_add_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 80))
+        else:
+            main.WIN.blit(key_add_pushed_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 80))
 
         main.draw_text("Press 'S' to go into subtract mode", main.FONT, (255, 255, 255), 30, 200)
-        main.WIN.blit(key_sub_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 180))
+        if (not s_pushed):
+            main.WIN.blit(key_sub_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 180))
+        else:
+            main.WIN.blit(key_sub_pushed_image, (main.WIDTH/2 - 330, main.HEIGHT/2 + 180))
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -75,6 +81,10 @@ def controls_screen():
                     down_pushed = True
                 if event.key == pygame.K_UP:
                     up_pushed = True
+                if event.key == pygame.K_a:
+                    a_pushed = True
+                if event.key == pygame.K_s:
+                    s_pushed = True
                 if event.key == pygame.K_SPACE:
                     controls_run = True
                     return True
@@ -87,6 +97,10 @@ def controls_screen():
                     down_pushed = False
                 if event.key == pygame.K_UP:
                     up_pushed = False
+                if event.key == pygame.K_a:
+                    a_pushed = False
+                if event.key == pygame.K_s:
+                    s_pushed = False
             if event.type == pygame.QUIT:
                 controls_run = False
                 return False
