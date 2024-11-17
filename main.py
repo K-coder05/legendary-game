@@ -1,6 +1,7 @@
 import pygame
 import os
 import screen_change
+import random
 from Gas import Gas 
 
 pygame.init()
@@ -25,6 +26,7 @@ GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
 score = 0
+target_score = 0
 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
 position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
@@ -32,8 +34,11 @@ direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
 
 def reset():
-    global score, position, position_chase, gas_spawns, direction, start_time
+    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL
     score = 0
+    target_score = 0
+    VEL_CHASE = 1
+    VEL = 5
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
@@ -48,6 +53,10 @@ def draw_text(text, font, text_color, x_offset, y_offset):
 def draw_score(score, font, text_color, x, y):
     score = font.render(str(score), True, text_color)
     WIN.blit(score, (x, y))
+
+def draw_target_score(target_score, font, text_color, x, y):
+    target_score_prompt = font.render(str(target_score), True, text_color)
+    WIN.blit(target_score_prompt, (x, y))
 
 def draw_window(position, position_chase, direction, chase_direction, elapsed_time):
     # Load images
@@ -104,7 +113,7 @@ def main():
     
 
     # Tell interpreter to find global variables
-    global score, position, position_chase, gas_spawns, direction, start_time  
+    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL  
 
     run = screen_change.main_screen()
 
@@ -179,6 +188,15 @@ def main():
 
 
         draw_score(str(score), FONT, WHITE, 25, 25)
+        draw_target_score(str(target_score), FONT, WHITE, 100, 25)
+
+        if (target_score == score):
+            target_score += random.randint(10, 20)
+            VEL_CHASE += 0.25
+            VEL += 0.5
+        elif score > target_score:
+            reset()
+
         pygame.display.update()
 
         # if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 2) and (abs(position.y == position_chase.y)):
