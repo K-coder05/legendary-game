@@ -27,12 +27,12 @@ WHITE = (255, 255, 255)
 score = 0
 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
 position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
-gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
 direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
 
 def reset():
-    global score, position, position_chase, gas_spawn, direction, start_time
+    global score, position, position_chase, gas_spawns, direction, start_time
     score = 0
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
@@ -104,7 +104,7 @@ def main():
     
 
     # Tell interpreter to find global variables
-    global score, position, position_chase, gas_spawn, direction, start_time  
+    global score, position, position_chase, gas_spawns, direction, start_time  
 
     run = screen_change.main_screen()
 
@@ -173,7 +173,9 @@ def main():
             if run:
                 reset()
         draw_window(position, position_chase, direction, chase_direction, 60 - elapsed_time)
-        gas_spawn.draw_gas(WIN)
+        
+        for gas_spawn in gas_spawns:
+            gas_spawn.draw_gas(WIN)
 
 
         draw_score(str(score), FONT, WHITE, 25, 25)
