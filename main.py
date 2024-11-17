@@ -1,26 +1,41 @@
 import pygame
 import os
+import screen_change
+
+pygame.init()
 
 # Initialize the game
-WIDTH, HEIGHT = 900, 500
+WIDTH, HEIGHT = 1100, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("First Legendary Game")
 
 # Define variables
 FPS = 60
 VEL = 5
-VEL_CHASE = 3
-MAIN_WIDTH, MAIN_HEIGHT = 55, 40
+VEL_CHASE = 1
+MAIN_WIDTH, MAIN_HEIGHT = 60, 50
+FONT = pygame.font.SysFont("Arial", 32)
 
+BG_IMAGE = pygame.image.load(os.path.join('Assets', 'grassbg.png'))
+BG = pygame.transform.scale(BG_IMAGE, (1100, 700))
+
+
+# Load images
 LEBRON_IMAGE = pygame.image.load(os.path.join('Assets', 'lebron.png'))
 LEBRON = pygame.transform.scale(LEBRON_IMAGE, (MAIN_WIDTH, MAIN_HEIGHT))
 BRONNY_IMAGE = pygame.image.load(os.path.join('Assets', 'bronny.png'))
 BRONNY = pygame.transform.scale(BRONNY_IMAGE, (MAIN_WIDTH, MAIN_HEIGHT))
 
+def draw_text(text, font, text_color, x, y):
+    img = font.render(text, True, text_color)
+    WIN.blit(img, (x, y))
+
 def draw_window(position, position_chase):
     WIN.fill((255, 255, 255))
+    WIN.blit(BG, (0, 0))
     WIN.blit(LEBRON, (position.x, position.y))
     WIN.blit(BRONNY, (position_chase.x, position_chase.y))
+    
     pygame.display.update()
 
 def chase_mechanic(position, position_chase):
@@ -43,7 +58,8 @@ def main():
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 
-    run = True
+    run = screen_change.main_screen()
+
     clock = pygame.time.Clock()
 
     while run:
@@ -56,19 +72,19 @@ def main():
         if direction == 0:
             position.x += VEL
             if position.x + VEL + MAIN_WIDTH > WIDTH:
-                direction = 1
+                run = False
         elif direction == 1:
             position.x -= VEL
             if position.x - VEL < 0:
-                direction = 0
+                run = False
         elif direction == 2:   
             position.y -= VEL
             if position.y - VEL < 0:
-                direction = 3
+                run = False
         elif direction == 3:
             position.y += VEL
             if position.y + VEL > HEIGHT:
-                direction = 2
+                run = False
 
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_RIGHT]:
@@ -83,8 +99,8 @@ def main():
         chase_mechanic(position, position_chase)
         draw_window(position, position_chase)
 
-        if (abs(position.x - position_chase.x) <= MAIN_WIDTH) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT):
-            run = False
+        if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 1.5) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT / 1.5):
+            run = screen_change.lose_screen()
             print("You lose!")
         
 
