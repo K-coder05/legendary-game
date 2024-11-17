@@ -126,7 +126,7 @@ def draw_window(position, direction, elapsed_time):
         draw_operation_symbol(current_operation, 250, 100)
     elif current_operation == "subtraction":
         draw_operation_symbol(current_operation, 250, 100)
-    draw_game_scoreboard(str(game_score), FONT, WHITE, 900, 10)
+    draw_game_scoreboard("Points: " + str(game_score), FONT, WHITE, 900, 10)
 
 def main():
     
@@ -136,7 +136,8 @@ def main():
     global direction, start_time, VEL_CHASE, VEL, current_operation, game_score  
 
     run = screen_change.main_screen()
-    run = screen_change.controls_screen()
+    if run:
+        run = screen_change.controls_screen()
 
     while run:
         CLOCK.tick(FPS)
