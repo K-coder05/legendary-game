@@ -140,7 +140,7 @@ def main():
         if position.colliderect(gas_spawn.gas_rect):
             gas_spawn.respawn()
             
-        draw_window(position, position_chase)
+        draw_window(position, position_chase, direction, chase_direction)
         gas_spawn.draw_gas(WIN)
         pygame.display.update()
 
