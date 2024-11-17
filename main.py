@@ -17,6 +17,10 @@ VEL_CHASE = 1
 MAIN_WIDTH, MAIN_HEIGHT = 80, 60
 FONT = pygame.font.SysFont("Arial", 32)
 
+
+CLOCK = pygame.time.Clock()
+START_TIME = pygame.time.get_ticks()
+
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
@@ -30,8 +34,8 @@ def draw_score(score, font, text_color, x, y):
     score = font.render(str(score), True, text_color)
     WIN.blit(score, (x, y))
 
-def draw_window(position, position_chase, direction, chase_direction):
-   # Load images
+def draw_window(position, position_chase, direction, chase_direction, elapsed_time):
+    # Load images
     if chase_direction == 0:
         chaser_image = pygame.image.load(os.path.join('Assets/ChaserSprite', 'police_east.png'))
     elif chase_direction == 1:
@@ -53,10 +57,14 @@ def draw_window(position, position_chase, direction, chase_direction):
     mainSprite = pygame.transform.scale(car_image, (MAIN_WIDTH, MAIN_HEIGHT))
     chaserSprite = pygame.transform.scale(chaser_image, (MAIN_WIDTH, MAIN_HEIGHT))
 
+    timer_text = f"Time: {elapsed_time}s"
+    timer_surface = FONT.render(timer_text, True, (255, 255, 255))
+
     WIN.fill(GRAY)
     WIN.blit(mainSprite, (position.x, position.y))
     WIN.blit(chaserSprite, (position_chase.x, position_chase.y))
-
+    WIN.blit(timer_surface, (800, 50))
+    
 def chase_mechanic(position, position_chase):
     distance_x = abs(position.x - position_chase.x)
     distance_y = abs(position.y - position_chase.y)
@@ -86,10 +94,9 @@ def main():
     global score # Tell interpreter to find variable score in the global scope
 
     run = screen_change.main_screen()
-    clock = pygame.time.Clock()
 
     while run:
-        clock.tick(FPS)
+        CLOCK.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -126,8 +133,6 @@ def main():
             direction = 3
 
         chase_direction = chase_mechanic(position, position_chase)
-        draw_window(position, position_chase, direction, chase_direction)
-        chase_mechanic(position, position_chase)
 
         if (abs(position.x - position_chase.x) <= MAIN_WIDTH) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT):
             run = screen_change.lose_screen()
@@ -140,13 +145,23 @@ def main():
             gas_spawn.respawn()
             
         
-        draw_window(position, position_chase, direction, chase_direction)
+        elapsed_time = (6000.0 - pygame.time.get_ticks()) / 1000  # Convert ms to seconds
+        if elapsed_time <= 0:
+            run = screen_change.lose_screen()
+            if run:
+                position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+                position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+                gas_spawn.respawn()
+                START_TIME = pygame.time.get_ticks()
+
+        draw_window(position, position_chase, direction, chase_direction, elapsed_time)
         gas_spawn.draw_gas(WIN)
+
 
         draw_score(str(score), FONT, WHITE, 25, 25)
         pygame.display.update()
 
-        if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 1.75) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT / 1.75):
+        if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 2) and (abs(position.y == position_chase.y)):
             run = screen_change.lose_screen()
             print("You lose!")
         
