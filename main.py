@@ -3,7 +3,7 @@ import os
 import screen_change
 import random
 
-from gas import Gas 
+from Gas import Gas 
 from chaser import Chaser
 
 pygame.init()
