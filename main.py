@@ -16,7 +16,7 @@ pygame.display.set_caption("Velocity Math")
 
 # Define constant variables
 FPS = 60
-VEL = 5
+VEL = 3
 VEL_CHASE = 1
 MAIN_WIDTH, MAIN_HEIGHT = 80, 60
 FONT = pygame.font.Font("Assets/Turok.ttf", 32)
@@ -50,7 +50,7 @@ def reset():
     game_score = 0
     current_operation = "addition"
     VEL_CHASE = 1
-    VEL = 5
+    VEL = 3
     position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
     chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(level)]
@@ -112,7 +112,7 @@ def draw_window(position, direction, elapsed_time):
     WIN.blit(timer_surface, (800, 100))
 
     for gas_spawn in gas_spawns:
-        if position.colliderect(gas_spawn.gas_rect):
+        if gas_spawn.gas_rect.collidepoint(position.x + 25, position.y + 25):
             if current_operation == "subtraction":
                 score -= gas_spawn.random_gas_num
             elif current_operation == "addition":
