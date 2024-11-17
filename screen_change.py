@@ -43,12 +43,6 @@ def main_screen():
     
     main_run = True
     while main_run:
-        main.WIN.fill((0, 0, 0))
-        main.draw_text("Welcome to Legendary Game!", main.FONT, (255, 255, 255), 0, -200)
-        main.draw_text("Stay In The Frame And", main.FONT, (255, 255, 255), 0, -100)
-        main.draw_text("Collect Numbers to Add/Subtract To Get The Answer!", main.FONT, (255, 255, 255), 0, 0)
-        main.draw_text("Press 'Space' to Start And", main.FONT, (255, 255, 255), 0, 100)
-        main.draw_text("'A' For Adding and 'S' For Subtraction", main.FONT, (255, 255, 255), 0, 200)
         main.WIN.blit(background_image, (0,0))
         main.draw_text("Welcome to Legendary Game", main.FONT, (0, 0, 0), 0, -100)
         
