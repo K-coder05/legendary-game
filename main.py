@@ -1,5 +1,6 @@
 import pygame
 import os
+import screen_change
 
 pygame.init()
 
@@ -50,7 +51,7 @@ def main():
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 
-    run = True
+    run = screen_change.main_screen()
     clock = pygame.time.Clock()
 
     while run:
@@ -58,6 +59,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    run = screen_change.pause_screen()
 
         # Define the movement of the character
         if direction == 0:
@@ -91,7 +95,11 @@ def main():
         draw_window(position, position_chase)
 
         if (abs(position.x - position_chase.x) <= MAIN_WIDTH) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT):
-            run = False
+            run = screen_change.lose_screen()
+            if run:
+                position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+                position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+
             print("You lose!")
         
 
