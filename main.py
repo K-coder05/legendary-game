@@ -25,9 +25,10 @@ WHITE = (255, 255, 255)
 
 score = 0
 
-def draw_text(text, font, text_color, x, y):
+def draw_text(text, font, text_color, x_offset, y_offset):
     img = font.render(text, True, text_color)
-    WIN.blit(img, (x, y))
+    img_rect = img.get_rect(center=(WIDTH/2 + x_offset, HEIGHT/2 + y_offset))
+    WIN.blit(img, img_rect)
 
 def draw_score(score, font, text_color, x, y):
     score = font.render(str(score), True, text_color)
