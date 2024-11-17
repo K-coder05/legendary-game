@@ -50,7 +50,7 @@ def reset():
 
 def draw_text(text, font, text_color, x_offset, y_offset):
     img = font.render(text, True, text_color)
-    img_rect = img.get_rect(center=(WIDTH/2 + x_offset, HEIGHT/2 + y_offset))
+    img_rect = img.get_rect(center=(WIDTH / 2 + x_offset, HEIGHT / 2 + y_offset))
     WIN.blit(img, img_rect)
 
 def draw_score(score, font, text_color, x, y):
@@ -84,11 +84,15 @@ def draw_window(position, position_chase, direction, chase_direction, elapsed_ti
     mainSprite = pygame.transform.scale(car_image, (MAIN_WIDTH, MAIN_HEIGHT))
     chaserSprite = pygame.transform.scale(chaser_image, (MAIN_WIDTH, MAIN_HEIGHT))
 
+    background_image = pygame.image.load(os.path.join('Assets', 'background.png')).convert()
+    background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+
     elapsed_time = round(elapsed_time, 2)
     timer_text = f"Time: {elapsed_time}s"
-    timer_surface = FONT.render(timer_text, True, (255, 255, 255))
+    timer_surface = FONT.render(timer_text, True, GRAY)
 
     WIN.fill(GRAY)
+    WIN.blit(background_image, (0, 0))
     WIN.blit(mainSprite, (position.x, position.y))
     WIN.blit(chaserSprite, (position_chase.x, position_chase.y))
     WIN.blit(timer_surface, (800, 50))
@@ -198,8 +202,8 @@ def main():
             gas_spawn.draw_gas(WIN)
 
 
-        draw_score(str(score), FONT, WHITE, 25, 25)
-        draw_target_score(str(target_score), FONT, WHITE, 100, 25)
+        draw_score(str(score), FONT, GRAY, 25, 25)
+        draw_target_score(str(target_score), FONT, GRAY, 100, 25)
 
         if (target_score == score):
             target_score += random.randint(10, 20)
