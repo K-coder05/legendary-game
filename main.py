@@ -2,7 +2,7 @@ import pygame
 import os
 import screen_change
 import random
-from Gas import Gas 
+from gas import Gas 
 
 pygame.init()
 
@@ -198,6 +198,7 @@ def main():
         for gas_spawn in gas_spawns:
             gas_spawn.draw_gas(WIN)
 
+
         if current_operation == "addition":
             draw_operation_symbol(current_operation, 250, 100)
         elif current_operation == "subtraction":
@@ -217,7 +218,7 @@ def main():
 
         pygame.display.update()
 
-        if (position.colliderect(position_chase)):
+        if (position.collidepoint(position_chase.x + 25, position_chase.y + 25)):
             run = screen_change.lose_screen()
             if run:
                 reset()
