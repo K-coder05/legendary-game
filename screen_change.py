@@ -8,15 +8,15 @@ pause_img = pygame.image.load("Assets/MenuButtons/PauseButton.png").convert_alph
 quit_img = pygame.image.load("Assets/MenuButtons/QuitButton.png").convert_alpha()
     
 
-def lose_screen():
+def lose_screen(game_score):
     play_button = button.Button(main.WIDTH/2 - 80, main.HEIGHT/2 + 50, play_img, 1.5)
     quit_button = button.Button(main.WIDTH/2 - 75, main.HEIGHT/2 + 150, quit_img, 1.5)
     
     lose_run = True
     while lose_run:
         main.WIN.fill((192,192,192))
-        
-        losing_message = "You lost! Score: " + str(main.score)
+
+        losing_message = "You lost! Score: " + str(game_score)
         main.draw_text(losing_message, main.FONT, (0, 0, 0), 0, -100)
         
         if play_button.draw(main.WIN):
