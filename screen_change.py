@@ -63,8 +63,8 @@ def lose_screen():
     lose_run = True
     while lose_run:
         main.WIN.fill((192,192,192))
-        
-        losing_message = "You lost! Score: " + str(main.score)
+
+        losing_message = "You lost! Score: " + str(game_score)
         main.draw_text(losing_message, main.FONT, (0, 0, 0), 0, -100)
         
         if play_button.draw(main.WIN):
@@ -83,8 +83,8 @@ def lose_screen():
 
 
 def main_screen():
-    play_button = button.Button(main.WIDTH/2 - 80, main.HEIGHT/2 - 50, play_img, 1.5)
-    quit_button = button.Button(main.WIDTH/2 - 75, main.HEIGHT/2 + 50, quit_img, 1.5)
+    play_button = button.Button(main.WIDTH / 2 - 80, main.HEIGHT / 2 - 50, play_img, 1.5)
+    quit_button = button.Button(main.WIDTH / 2 - 75, main.HEIGHT / 2 + 50, quit_img, 1.5)
     
     background_image = pygame.image.load("Assets/MenuButtons/MenuBackground.jpg")
     background_image = pygame.transform.scale(background_image, (main.WIDTH, main.HEIGHT))
