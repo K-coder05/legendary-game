@@ -133,6 +133,7 @@ def main():
         if position.colliderect(gas_spawn.gas_rect):
             gas_spawn.respawn()
             
+        start_time = pygame.time.get_ticks()
         elapsed_time = (6000.0 - start_time) / 1000  # Convert ms to seconds
         if elapsed_time <= 0:
             run = screen_change.lose_screen()
