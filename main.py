@@ -197,7 +197,7 @@ def main():
             current_operation = "addition"
         
         elapsed_time = (pygame.time.get_ticks() - start_time) / 1000  # Convert ms to seconds
-        if elapsed_time <= 0:
+        if elapsed_time >= start_time:
             run = screen_change.lose_screen(game_score)
             if run:
                 reset()
