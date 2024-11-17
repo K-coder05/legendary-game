@@ -34,6 +34,7 @@ list_of_operations = ["addition", "subtraction"]
 current_operation = list_of_operations[0]
 score = 0
 target_score = 0
+game_score = 0
 position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
 position_chase = pygame.Rect(800, 200, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
@@ -43,9 +44,11 @@ chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in ra
 
 # Resets the game
 def reset():
-    global chasers, score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation
+    global chasers, score, target_score, position, position_chase
+    global gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation, game_score
     score = 0
     target_score = 0
+    game_score = 0
     current_operation = "addition"
     VEL_CHASE = 1
     VEL = 5
@@ -55,6 +58,7 @@ def reset():
     chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
     start_time = pygame.time.get_ticks()
+    print("Level 2")
 
 def draw_text(text, font, text_color, x_offset, y_offset):
     img = font.render(text, True, text_color)
@@ -68,6 +72,10 @@ def draw_score(score, font, text_color, x, y):
 def draw_target_score(target_score, font, text_color, x, y):
     target_score_prompt = font.render(str(target_score), True, text_color)
     WIN.blit(target_score_prompt, (x, y))
+
+def draw_game_scoreboard(game_score, font, text_color, x, y):
+    game_scoreboard = font.render(str(game_score), False, text_color)
+    WIN.blit(game_scoreboard, (x, y))
 
 def draw_operation_symbol(current_operation, x, y):
     symbol_image_path = os.path.join('Assets', f"{current_operation} symbol.png")
@@ -121,11 +129,13 @@ def draw_window(position, direction, elapsed_time):
         draw_operation_symbol(current_operation, 250, 100)
     elif current_operation == "subtraction":
         draw_operation_symbol(current_operation, 250, 100)
+    draw_game_scoreboard(str(game_score), FONT, WHITE, 900, 10)
 
 def main():
     
-    # Find global variables
-    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation  
+
+    # Tell interpreter to find global variables
+    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation, game_score  
 
     run = screen_change.main_screen()
 
@@ -142,25 +152,25 @@ def main():
         if direction == 0:
             position.x += VEL
             if position.x + VEL + MAIN_WIDTH > WIDTH:
-                run = screen_change.lose_screen()
+                run = screen_change.lose_screen(game_score)
                 if run: 
                     reset()
         elif direction == 1:
             position.x -= VEL
             if position.x - VEL < 0:
-                run = screen_change.lose_screen()
+                run = screen_change.lose_screen(game_score)
                 if run: 
                     reset()
         elif direction == 2:   
             position.y -= VEL
             if position.y - VEL < BORDER_MAX_HEIGHT:
-                run = screen_change.lose_screen()
+                run = screen_change.lose_screen(game_score)
                 if run: 
                     reset()
         elif direction == 3:
             position.y += VEL
-            if position.y + VEL > HEIGHT - BORDER_THICKNESS:
-                run = screen_change.lose_screen()
+            if position.y + VEL > HEIGHT:
+                run = screen_change.lose_screen(game_score)
                 if run: 
                     reset()
 
@@ -180,7 +190,7 @@ def main():
         
         elapsed_time = (pygame.time.get_ticks() - start_time) / 1000  # Convert ms to seconds
         if elapsed_time <= 0:
-            run = screen_change.lose_screen()
+            run = screen_change.lose_screen(game_score)
             if run:
                 reset()
 
@@ -188,8 +198,14 @@ def main():
             target_score += random.randint(10, 20)
             VEL_CHASE += 0.25
             VEL += 1
+            game_score += 10
         elif score > target_score:
-            run = screen_change.lose_screen()
+            run = screen_change.lose_screen(game_score)
+            if run:
+                reset()
+
+        if (position.colliderect(position_chase)):
+            run = screen_change.lose_screen(game_score)
             if run:
                 reset()
 
@@ -204,7 +220,7 @@ def main():
         pygame.display.update()
 
         if (position.collidepoint(position_chase.x + 25, position_chase.y + 25)):
-            run = screen_change.lose_screen()
+            run = screen_change.lose_screen(game_score)
             if run:
                 reset()
 
