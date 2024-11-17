@@ -25,6 +25,8 @@ CLOCK = pygame.time.Clock()
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
+list_of_operations = ["+", "-"]
+current_operation = list_of_operations[0]
 score = 0
 target_score = 0
 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
@@ -34,9 +36,10 @@ direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
 
 def reset():
-    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL
+    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation
     score = 0
     target_score = 0
+    current_operation = "+"
     VEL_CHASE = 1
     VEL = 5
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
@@ -113,7 +116,7 @@ def main():
     
 
     # Tell interpreter to find global variables
-    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL  
+    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation  
 
     run = screen_change.main_screen()
 
@@ -161,6 +164,11 @@ def main():
             direction = 2
         elif keys_pressed[pygame.K_DOWN]:
             direction = 3
+        if keys_pressed[pygame.K_s]:
+            current_operation = "-"
+        elif keys_pressed[pygame.K_a]:
+            current_operation = "+"
+
 
         chase_direction = chase_mechanic(position, position_chase)
 
@@ -172,7 +180,10 @@ def main():
 
         for gas_spawn in gas_spawns:
             if position.colliderect(gas_spawn.gas_rect):
-                score += gas_spawn.random_gas_num
+                if current_operation == "-":
+                    score -= gas_spawn.random_gas_num
+                elif current_operation == "+":
+                    score += gas_spawn.random_gas_num
                 gas_spawn.respawn()
             
         
