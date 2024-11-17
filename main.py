@@ -76,13 +76,13 @@ def chase_mechanic(position, position_chase):
             position_chase.y += VEL_CHASE
             return 2
 
-
 def main():
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
-
+    start_time = pygame.time.get_ticks()
+    
     run = screen_change.main_screen()
 
     while run:
@@ -99,18 +99,42 @@ def main():
             position.x += VEL
             if position.x + VEL + MAIN_WIDTH > WIDTH:
                 run = screen_change.lose_screen()
+                if run: 
+                    position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+                    position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+                    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+                    direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+                    start_time = pygame.time.get_ticks()
         elif direction == 1:
             position.x -= VEL
             if position.x - VEL < 0:
                 run = screen_change.lose_screen()
+                if run: 
+                    position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+                    position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+                    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+                    direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+                    start_time = pygame.time.get_ticks()
         elif direction == 2:   
             position.y -= VEL
             if position.y - VEL < 0:
                 run = screen_change.lose_screen()
+                if run: 
+                    position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+                    position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+                    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+                    direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+                    start_time = pygame.time.get_ticks()
         elif direction == 3:
             position.y += VEL
             if position.y + VEL > HEIGHT:
                 run = screen_change.lose_screen()
+                if run: 
+                    position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
+                    position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+                    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+                    direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+                    start_time = pygame.time.get_ticks()
 
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_RIGHT]:
@@ -129,20 +153,24 @@ def main():
             if run:
                 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
                 position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+                gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+                direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+                start_time = pygame.time.get_ticks()
+
 
         if position.colliderect(gas_spawn.gas_rect):
             gas_spawn.respawn()
             
-        start_time = pygame.time.get_ticks()
-        elapsed_time = (6000.0 - start_time) / 1000  # Convert ms to seconds
+        
+        elapsed_time = (60000.0 - pygame.time.get_ticks()) / 1000  # Convert ms to seconds
         if elapsed_time <= 0:
             run = screen_change.lose_screen()
             if run:
                 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
                 position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
-                gas_spawn.respawn()
-                start_time = 0
-
+                gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+                direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+                start_time = pygame.time.get_ticks()
         draw_window(position, position_chase, direction, chase_direction, elapsed_time)
         gas_spawn.draw_gas(WIN)
 
