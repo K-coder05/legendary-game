@@ -11,7 +11,7 @@ WIDTH, HEIGHT = 1100, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("First Legendary Game")
 
-# Define variables
+# Define constant variables
 FPS = 60
 VEL = 5
 VEL_CHASE = 1
@@ -24,6 +24,7 @@ CLOCK = pygame.time.Clock()
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
 
+# Define global variables
 list_of_operations = ["addition", "subtraction"]
 current_operation = list_of_operations[0]
 score = 0
