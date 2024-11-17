@@ -177,14 +177,7 @@ def main():
         elif keys_pressed[pygame.K_a]:
             current_operation = "addition"
 
-
         chase_direction = chase_mechanic(position, position_chase)
-
-        if (abs(position.x - position_chase.x) <= MAIN_WIDTH) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT):
-            run = screen_change.lose_screen()
-            if run:
-                reset()
-
 
         for gas_spawn in gas_spawns:
             if position.colliderect(gas_spawn.gas_rect):
@@ -224,13 +217,10 @@ def main():
 
         pygame.display.update()
 
-        # if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 2) and (abs(position.y == position_chase.y)):
-        if (position.x == position_chase.x) and (position.y == position_chase.y):
+        if (abs(position.x - position_chase.x) < 50) and ( abs(position.y == position_chase.y):
             run = screen_change.lose_screen()
             if run:
                 reset()
-        
-        
 
     pygame.quit()
 
