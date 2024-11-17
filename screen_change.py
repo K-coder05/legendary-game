@@ -48,6 +48,8 @@ def controls_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    
                 if event.key == pygame.K_SPACE:
                     controls_run = True
                     return True
