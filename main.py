@@ -1,6 +1,7 @@
 import pygame
 import os
 import screen_change
+from Gas import Gas 
 
 pygame.init()
 
@@ -70,9 +71,11 @@ def chase_mechanic(position, position_chase):
             position_chase.y += VEL_CHASE
             return 2
 
+
 def main():
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 
     run = screen_change.main_screen()
@@ -115,6 +118,14 @@ def main():
 
         chase_direction = chase_mechanic(position, position_chase)
         draw_window(position, position_chase, direction, chase_direction)
+        chase_mechanic(position, position_chase)
+
+        if position.colliderect(gas_spawn.gas_rect):
+            gas_spawn.respawn()
+            
+        draw_window(position, position_chase)
+        gas_spawn.draw_gas(WIN)
+        pygame.display.update()
 
         if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 1.75) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT / 1.75):
             run = screen_change.lose_screen()
