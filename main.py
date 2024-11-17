@@ -136,7 +136,8 @@ def main():
     global direction, start_time, VEL_CHASE, VEL, current_operation, game_score  
 
     run = screen_change.main_screen()
-    run = screen_change.controls_screen()
+    if run:
+        run = screen_change.controls_screen()
 
     while run:
         CLOCK.tick(FPS)
