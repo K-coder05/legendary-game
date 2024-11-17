@@ -35,8 +35,8 @@ def lose_screen(game_score):
 
 
 def main_screen():
-    play_button = button.Button(main.WIDTH/2 - 80, main.HEIGHT/2 - 50, play_img, 1.5)
-    quit_button = button.Button(main.WIDTH/2 - 75, main.HEIGHT/2 + 50, quit_img, 1.5)
+    play_button = button.Button(main.WIDTH / 2 - 80, main.HEIGHT / 2 - 50, play_img, 1.5)
+    quit_button = button.Button(main.WIDTH / 2 - 75, main.HEIGHT / 2 + 50, quit_img, 1.5)
     
     background_image = pygame.image.load("Assets/MenuButtons/MenuBackground.jpg")
     background_image = pygame.transform.scale(background_image, (main.WIDTH, main.HEIGHT))
