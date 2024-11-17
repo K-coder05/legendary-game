@@ -16,6 +16,7 @@ VEL = 5
 VEL_CHASE = 1
 MAIN_WIDTH, MAIN_HEIGHT = 80, 60
 FONT = pygame.font.SysFont("Arial", 32)
+NUM_OF_GAS_CANS = 4
 
 
 CLOCK = pygame.time.Clock()
@@ -88,7 +89,7 @@ def chase_mechanic(position, position_chase):
 def main():
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
-    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
+    gas_spawns =  [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 
     global score # Tell interpreter to find variable score in the global scope
@@ -140,12 +141,13 @@ def main():
                 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
                 position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
 
-        if position.colliderect(gas_spawn.gas_rect):
-            score += gas_spawn.random_gas_num
-            gas_spawn.respawn()
+        for gas_spawn in gas_spawns:
+            if position.colliderect(gas_spawn.gas_rect):
+                score += gas_spawn.random_gas_num
+                gas_spawn.respawn()
             
         start_time = pygame.time.get_ticks()
-        elapsed_time = (6000.0 - start_time) / 1000  # Convert ms to seconds
+        elapsed_time = (60000.0 - start_time) / 1000  # Convert ms to seconds
         if elapsed_time <= 0:
             run = screen_change.lose_screen()
             if run:
@@ -155,7 +157,8 @@ def main():
                 start_time = 0
 
         draw_window(position, position_chase, direction, chase_direction, elapsed_time)
-        gas_spawn.draw_gas(WIN)
+        for gas_spawn in gas_spawns:
+            gas_spawn.draw_gas(WIN)
 
 
         draw_score(str(score), FONT, WHITE, 25, 25)
