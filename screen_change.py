@@ -39,6 +39,9 @@ def controls_screen():
         main.WIN.blit(key_space2_img, (main.WIDTH/2 - 15, main.HEIGHT/2 + 100))
         main.WIN.blit(key_space3_img, (main.WIDTH/2 + 16, main.HEIGHT/2 + 100))
 
+        main.draw_text("Press 'A' to go into add mode", main.FONT, (255, 255, 255), 0, 150)
+        
+
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
