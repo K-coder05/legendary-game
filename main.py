@@ -5,6 +5,7 @@ import random
 
 from gas import Gas 
 from chaser import Chaser
+from cone import Cone
 
 pygame.init()
 
@@ -38,12 +39,14 @@ game_score = 0
 position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
 direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
+level = 0
 start_time = pygame.time.get_ticks()
-chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
+chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(level)]
+cones = [Cone(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(level)]
 
 # Resets the game
 def reset():
-    global chasers, score, target_score, position
+    global chasers, score, target_score, position, cones, level
     global gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation, game_score
     score = 0
     target_score = random.randint(10, 20)
@@ -56,6 +59,9 @@ def reset():
     chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
     start_time = pygame.time.get_ticks()
+    cones = [Cone(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(level)]
+    level = 1
+
 
 def draw_text(text, font, text_color, x_offset, y_offset):
     img = font.render(text, True, text_color)
@@ -83,7 +89,7 @@ def draw_operation_symbol(current_operation, x, y):
 def draw_window(position, direction, elapsed_time):
     
     # Global variables
-    global score, target_score, gas_spawns, current_operation, game_score
+    global score, target_score, gas_spawns, current_operation, game_score, chasers, cones
     
     # Load image
     if direction == 0:
@@ -119,6 +125,9 @@ def draw_window(position, direction, elapsed_time):
 
     for chaser in chasers:
         chaser.draw(WIN, position)
+
+    for cone in cones:
+        cone.draw(WIN)
         
     draw_score("Score: " + str(score), FONT, WHITE, 100, 100)
     draw_target_score("Target Score: " + str(target_score), FONT, WHITE, 350, 100)
@@ -132,7 +141,7 @@ def main():
     
 
     # Tell interpreter to find global variables
-    global score, target_score, position, gas_spawns, chasers
+    global score, target_score, position, gas_spawns, chasers, level
     global direction, start_time, VEL_CHASE, VEL, current_operation, game_score  
 
     run = screen_change.main_screen()
@@ -199,6 +208,9 @@ def main():
             VEL_CHASE += 0.25
             VEL += 0.5
             game_score += 10
+            level += 1
+            chasers.append(Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE))
+            cones.append(Cone(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT))
         elif score > target_score:
             run = screen_change.lose_screen(game_score)
             if run:
@@ -208,6 +220,12 @@ def main():
 
         for chaser in chasers:
             if (chaser.get_rect().collidepoint(position.x + 25, position.y + 25)):
+                run = screen_change.lose_screen(game_score)
+                if run:
+                    reset()
+
+        for cone in cones:
+            if (cone.rect.collidepoint(position.x + 25, position.y + 25)):
                 run = screen_change.lose_screen(game_score)
                 if run:
                     reset()
