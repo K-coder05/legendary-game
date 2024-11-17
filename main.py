@@ -19,7 +19,6 @@ FONT = pygame.font.SysFont("Arial", 32)
 
 
 CLOCK = pygame.time.Clock()
-START_TIME = pygame.time.get_ticks()
 
 GRAY = (128, 128, 128)
 WHITE = (255, 255, 255)
@@ -144,15 +143,15 @@ def main():
             score += gas_spawn.random_gas_num
             gas_spawn.respawn()
             
-        
-        elapsed_time = (6000.0 - pygame.time.get_ticks()) / 1000  # Convert ms to seconds
+        start_time = pygame.time.get_ticks()
+        elapsed_time = (6000.0 - start_time) / 1000  # Convert ms to seconds
         if elapsed_time <= 0:
             run = screen_change.lose_screen()
             if run:
                 position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
                 position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
                 gas_spawn.respawn()
-                START_TIME = pygame.time.get_ticks()
+                start_time = 0
 
         draw_window(position, position_chase, direction, chase_direction, elapsed_time)
         gas_spawn.draw_gas(WIN)
