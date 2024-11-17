@@ -36,7 +36,6 @@ score = 0
 target_score = 0
 game_score = 0
 position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
-position_chase = pygame.Rect(800, 200, MAIN_WIDTH, MAIN_HEIGHT)
 gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
 direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 start_time = pygame.time.get_ticks()
@@ -44,7 +43,7 @@ chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in ra
 
 # Resets the game
 def reset():
-    global chasers, score, target_score, position, position_chase
+    global chasers, score, target_score, position
     global gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation, game_score
     score = 0
     target_score = 0
@@ -53,7 +52,6 @@ def reset():
     VEL_CHASE = 1
     VEL = 5
     position = pygame.Rect(200, 200, MAIN_WIDTH, MAIN_HEIGHT)
-    position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
     gas_spawns = [Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT) for i in range(NUM_OF_GAS_CANS)]
     chasers = [Chaser(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT, VEL_CHASE) for i in range(NUM_OF_CHASERS)]
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
@@ -135,9 +133,11 @@ def main():
     
 
     # Tell interpreter to find global variables
-    global score, target_score, position, position_chase, gas_spawns, direction, start_time, VEL_CHASE, VEL, current_operation, game_score  
+    global score, target_score, position, gas_spawns, chasers
+    global direction, start_time, VEL_CHASE, VEL, current_operation, game_score  
 
     run = screen_change.main_screen()
+    run = screen_change.controls_screen()
 
     while run:
         CLOCK.tick(FPS)
@@ -204,25 +204,15 @@ def main():
             if run:
                 reset()
 
-        if (position.colliderect(position_chase)):
-            run = screen_change.lose_screen(game_score)
-            if run:
-                reset()
-
         draw_window(position, direction, 60 - elapsed_time)
 
         for chaser in chasers:
             if (position.colliderect(chaser.get_rect())):
-                run = screen_change.lose_screen()
+                run = screen_change.lose_screen(game_score)
                 if run:
                     reset()
 
         pygame.display.update()
-
-        if (position.collidepoint(position_chase.x + 25, position_chase.y + 25)):
-            run = screen_change.lose_screen(game_score)
-            if run:
-                reset()
 
     pygame.quit()
 
