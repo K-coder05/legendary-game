@@ -1,6 +1,7 @@
 import pygame
 import os
 import screen_change
+from Gas import Gas 
 
 pygame.init()
 
@@ -13,7 +14,7 @@ pygame.display.set_caption("First Legendary Game")
 FPS = 60
 VEL = 5
 VEL_CHASE = 1
-MAIN_WIDTH, MAIN_HEIGHT = 55, 40
+MAIN_WIDTH, MAIN_HEIGHT = 55, 40 # Size of Sprites
 FONT = pygame.font.SysFont("Arial", 32)
 
 LEBRON_IMAGE = pygame.image.load(os.path.join('Assets', 'lebron.png'))
@@ -47,9 +48,11 @@ def chase_mechanic(position, position_chase):
         else:
             position_chase.y += VEL_CHASE
 
+
 def main():
     position = pygame.Rect(300, 100, MAIN_WIDTH, MAIN_HEIGHT)
     position_chase = pygame.Rect(800, 300, MAIN_WIDTH, MAIN_HEIGHT)
+    gas_spawn = Gas(WIDTH, HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)
     direction = 0 # 0 = right, 1 = left, 2 = up, 3 = down
 
     run = screen_change.main_screen()
@@ -91,7 +94,13 @@ def main():
             direction = 3
 
         chase_mechanic(position, position_chase)
+
+        if position.colliderect(gas_spawn.gas_rect):
+            gas_spawn.respawn()
+            
         draw_window(position, position_chase)
+        gas_spawn.draw_gas(WIN)
+        pygame.display.update()
 
         if (abs(position.x - position_chase.x) <= MAIN_WIDTH / 1.5) and (abs(position.y - position_chase.y) <= MAIN_HEIGHT / 1.5):
             run = screen_change.lose_screen()
